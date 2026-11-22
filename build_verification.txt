@@ -1,0 +1,29 @@
+OS COMMAND HISTORY SHELL - BUILD AND VALIDATION LOG
+Environment: Linux 6.18.57 x86_64 GNU/Linux
+Compiler: gcc (Debian 14.2.0-19) 14.2.0
+Build command: gcc -std=c11 -Wall -Wextra -Wpedantic -Werror -O2 /mnt/data/os_command_history_shell.c -o /tmp/os-shell-validation-ea66r1i6/os_command_history_shell
+Build exit code: 0
+Build result: PASS (the compiler produced the executable without warnings or errors)
+Executable: /tmp/os-shell-validation-ea66r1i6/os_command_history_shell
+History file permission check: 0600 (expected 0600)
+
+TEST RESULTS
+TEST 1 - Quoted argument: PASS
+Observed: OS Command History Shell | Built-ins: cd, history, search <text>, exit | os-shell> hello operating systems | os-shell> Shell closed.
+TEST 2 - History and search: PASS
+Observed: OS Command History Shell | Built-ins: cd, history, search <text>, exit | os-shell> alpha | os-shell> beta
+TEST 3 - Persistence session one: PASS
+Observed: OS Command History Shell | Built-ins: cd, history, search <text>, exit | os-shell> saved-command | os-shell> Shell closed.
+TEST 3 - Persistence session two: PASS
+Observed: OS Command History Shell | Built-ins: cd, history, search <text>, exit | os-shell>   1  echo saved-command | 2  history
+TEST 4 - Unmatched quote: PASS
+Observed: OS Command History Shell | Built-ins: cd, history, search <text>, exit | os-shell> os-shell> recovered | os-shell> Shell closed.
+TEST 5 - Oversized line: PASS
+Observed: OS Command History Shell | Built-ins: cd, history, search <text>, exit | os-shell> os-shell> recovered | os-shell> Shell closed.
+TEST 6 - Excessive argument count: PASS
+Observed: OS Command History Shell | Built-ins: cd, history, search <text>, exit | os-shell> os-shell> recovered | os-shell> Shell closed.
+TEST 7 - Unknown command recovery: PASS
+Observed: OS Command History Shell | Built-ins: cd, history, search <text>, exit | os-shell> os-shell> shell-still-running | os-shell> Shell closed.
+TEST 8 - Symbolic-link history path: PASS
+Observed: OS Command History Shell | Built-ins: cd, history, search <text>, exit | os-shell> memory-only | os-shell> Shell closed.
+All eight automated verification cases passed in this Linux runtime.

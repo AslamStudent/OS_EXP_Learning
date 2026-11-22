@@ -1,53 +1,60 @@
 OS COMMAND HISTORY SHELL - TEST RECORD
-Environment: Linux 6.18.57 x86_64
-Compiler: GCC 14.2.0
+Environment used for this build verification: Linux 6.18.57 x86_64 GNU/Linux
+Compiler: gcc (Debian 14.2.0-19) 14.2.0
 Build flags: -std=c11 -Wall -Wextra -Wpedantic -Werror -O2
+Build result: PASS (exit code 0)
 
 TEST 1 - Quoted argument
 Input: echo "hello operating systems"
-Observed output: hello operating systems
+Expected: Print the complete phrase as one argument.
+Actual: Printed "hello operating systems" and saved the command.
 Result: PASS
 
 TEST 2 - Search and history built-ins
-Input sequence: echo alpha; echo beta; search alpha; history
-Observed search result: 1  echo alpha
-Observed history output listed echo alpha, echo beta, search alpha, and history.
+Input: echo alpha; echo beta; search alpha; history
+Expected: Search finds echo alpha; history lists accepted commands.
+Actual: Search displayed echo alpha and search alpha; history displayed all four commands.
 Result: PASS
 
 TEST 3 - Persistence across sessions
-Session 1: echo saved-command; exit
-Session 2: history; exit
-Observed: the second session displayed 1  echo saved-command.
+Input: Session 1: echo saved-command; exit. Session 2: history; exit.
+Expected: The first session's command appears in the second session.
+Actual: The second session displayed echo saved-command and history.
 Result: PASS
 
 TEST 4 - Unmatched quotation mark
 Input: echo "unfinished
-Observed error: Input rejected: unmatched quotation mark.
-Observed: shell prompt remained available; invalid command was not stored.
+Expected: Reject the malformed input and keep the shell open.
+Actual: Input rejected: unmatched quotation mark. A following valid command ran.
 Result: PASS
 
 TEST 5 - Oversized line
-Input: a 1,100-character line
-Observed error: Input rejected: command exceeds 1023 characters.
-Observed: shell prompt remained available; oversized line was not stored.
+Input: A line containing 1,100 characters.
+Expected: Reject input longer than 1,023 characters and continue.
+Actual: Input rejected: command exceeds 1023 characters. A following valid command ran.
 Result: PASS
 
 TEST 6 - Excessive argument count
-Input: echo followed by 65 arguments
-Observed error: Input rejected: too many arguments (maximum 64).
+Input: echo followed by 64 additional arguments (65 total).
+Expected: Reject the command because the maximum argument count is 64.
+Actual: Input rejected: too many arguments (maximum 64). A following valid command ran.
 Result: PASS
 
 TEST 7 - Unknown command recovery
-Input sequence: command_that_does_not_exist; echo shell-still-running
-Observed: command_that_does_not_exist: No such file or directory
-Observed: shell-still-running
+Input: command_that_does_not_exist, followed by echo shell-still-running.
+Expected: Display an execution error and execute the following valid command.
+Actual: No-such-file error was displayed; shell-still-running was printed.
 Result: PASS
 
 TEST 8 - Symbolic-link history path
-Setup: history path pointed to a symbolic link targeting a file containing KEEP.
-Observed warning: History warning: Too many levels of symbolic links
-Observed: target file content remained KEEP; shell accepted an in-memory command.
+Input: Set SHELL_HISTORY_FILE to a symbolic link whose target contains KEEP.
+Expected: Refuse to follow the symbolic link and leave the target unchanged.
+Actual: History warning: Too many levels of symbolic links. Target remained KEEP; shell accepted the command in memory.
 Result: PASS
 
 File permission check
-Observed history file mode: 600 (owner read/write only).
+Expected: History file restricted to owner read/write (0600).
+Actual: File mode 0600.
+Result: PASS
+
+Student-supplied screenshots in screenshots/ show six interactive test demonstrations in GitHub Codespaces. build_verification.txt records the separate reproducible compile and test check.
