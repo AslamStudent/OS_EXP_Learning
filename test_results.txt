@@ -1,0 +1,53 @@
+OS COMMAND HISTORY SHELL - TEST RECORD
+Environment: Linux 6.18.57 x86_64
+Compiler: GCC 14.2.0
+Build flags: -std=c11 -Wall -Wextra -Wpedantic -Werror -O2
+
+TEST 1 - Quoted argument
+Input: echo "hello operating systems"
+Observed output: hello operating systems
+Result: PASS
+
+TEST 2 - Search and history built-ins
+Input sequence: echo alpha; echo beta; search alpha; history
+Observed search result: 1  echo alpha
+Observed history output listed echo alpha, echo beta, search alpha, and history.
+Result: PASS
+
+TEST 3 - Persistence across sessions
+Session 1: echo saved-command; exit
+Session 2: history; exit
+Observed: the second session displayed 1  echo saved-command.
+Result: PASS
+
+TEST 4 - Unmatched quotation mark
+Input: echo "unfinished
+Observed error: Input rejected: unmatched quotation mark.
+Observed: shell prompt remained available; invalid command was not stored.
+Result: PASS
+
+TEST 5 - Oversized line
+Input: a 1,100-character line
+Observed error: Input rejected: command exceeds 1023 characters.
+Observed: shell prompt remained available; oversized line was not stored.
+Result: PASS
+
+TEST 6 - Excessive argument count
+Input: echo followed by 65 arguments
+Observed error: Input rejected: too many arguments (maximum 64).
+Result: PASS
+
+TEST 7 - Unknown command recovery
+Input sequence: command_that_does_not_exist; echo shell-still-running
+Observed: command_that_does_not_exist: No such file or directory
+Observed: shell-still-running
+Result: PASS
+
+TEST 8 - Symbolic-link history path
+Setup: history path pointed to a symbolic link targeting a file containing KEEP.
+Observed warning: History warning: Too many levels of symbolic links
+Observed: target file content remained KEEP; shell accepted an in-memory command.
+Result: PASS
+
+File permission check
+Observed history file mode: 600 (owner read/write only).
